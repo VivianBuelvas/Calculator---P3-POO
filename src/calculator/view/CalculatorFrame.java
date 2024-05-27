@@ -2,26 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package calculator;
+package calculator.view;
 
+import calculator.Main.Main;
+import calculator.controller.AddController;
+import calculator.controller.DivideController;
+import calculator.controller.HistoryController;
+import calculator.controller.MultiplyController;
+import calculator.controller.PotencyController;
+import calculator.controller.SubstractController;
+import calculator.controller.utils.Response;
+import calculator.model.storage.History;
+import calculator.model.Operation;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 
 /**
  *
  * @author edangulo
  */
 public class CalculatorFrame extends javax.swing.JFrame {
-    
-    private History history;
 
     /**
      * Creates new form Calculator
      */
     public CalculatorFrame() {
-        this.history = new History();
         initComponents();
     }
 
@@ -211,17 +219,24 @@ public class CalculatorFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+
+        String number1 = jTextField1.getText();
+        String number2 = jTextField2.getText();
         try {
-            Calculator calculator = new Calculator();
-            
-            double number1 = Double.parseDouble(jTextField1.getText());
-            double number2 = Double.parseDouble(jTextField2.getText());
-            double result = calculator.add(number1, number2);
-            
-            this.history.addOperation(new Operation(number1, number2, "+", result));
-            
-            jTextField3.setText("" + result);
+
+            Response r = AddController.createOperation(number1, number2);
+
+            //Display response!
+            if (r.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (r.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText((String) r.getObject());
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -229,16 +244,21 @@ public class CalculatorFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        String number1 = jTextField1.getText();
+        String number2 = jTextField2.getText();
         try {
-            Calculator calculator = new Calculator();
-            
-            double number1 = Double.parseDouble(jTextField1.getText());
-            double number2 = Double.parseDouble(jTextField2.getText());
-            double result = calculator.subtract(number1, number2);
-            
-            this.history.addOperation(new Operation(number1, number2, "-", result));
-            
-            jTextField3.setText("" + result);
+            Response r = SubstractController.createOperation(number1, number2);
+
+            if (r.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (r.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText((String) r.getObject());
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -246,33 +266,43 @@ public class CalculatorFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        String number1 = jTextField1.getText();
+        String number2 = jTextField2.getText();
         try {
-            Calculator calculator = new Calculator();
-            
-            double number1 = Double.parseDouble(jTextField1.getText());
-            double number2 = Double.parseDouble(jTextField2.getText());
-            double result = calculator.multiply(number1, number2);
-            
-            this.history.addOperation(new Operation(number1, number2, "*", result));
-            
-            jTextField3.setText("" + result);
+            Response r = MultiplyController.createOperation(number1, number2);
+
+            if (r.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (r.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText((String) r.getObject());
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:    
+        String number1 = jTextField1.getText();
+        String number2 = jTextField2.getText();
         try {
-            Calculator calculator = new Calculator();
-            
-            double number1 = Double.parseDouble(jTextField1.getText());
-            double number2 = Double.parseDouble(jTextField2.getText());
-            double result = calculator.divide(number1, number2);
-            
-            this.history.addOperation(new Operation(number1, number2, "/", result));
-            
-            jTextField3.setText("" + result);
+            Response r = DivideController.createOperation(number1, number2);
+
+            if (r.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (r.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText((String) r.getObject());
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -280,7 +310,24 @@ public class CalculatorFrame extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Not Implemented", "Error", JOptionPane.ERROR_MESSAGE);
+        String number1 = jTextField1.getText();
+        String number2 = jTextField2.getText();
+        try {
+            Response r = PotencyController.createOperation(number1, number2);
+
+            if (r.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (r.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, r.getMessage(), "Error " + r.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText((String) r.getObject());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -292,49 +339,18 @@ public class CalculatorFrame extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        ArrayList<Operation> operationHistory = this.history.getOperations();
-        Collections.reverse(this.history.getOperations());
-        
-        DefaultListModel model = new DefaultListModel();
-        model.addAll(operationHistory);
-        jList1.setModel(model);
+        Response history = HistoryController.getHistory();
+
+        //Display response!
+        if (history.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, history.getMessage(), "Error " + history.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (history.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, history.getMessage(), "Error " + history.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            jList1.setModel((ListModel<String>) history.getObject());
+}
     }//GEN-LAST:event_jButton7ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CalculatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CalculatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CalculatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CalculatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CalculatorFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
